@@ -6,7 +6,7 @@ from datetime import datetime
 
 def job_extracao():
     # URL da API do Banco Central (Série 4390 - Selic)
-    URL = "https://api.bcb.gov.br/dados/serie/bcdata.sgs.4390/dados?formato=json"
+    URL = "https://api.bcb.gov.br/dados/serie/bcdata.sgs.11/dados?formato=json&dataInicial=01/01/2022&dataFinal=04/03/2026"
 
     try:
         response = requests.get(URL, timeout=30)
