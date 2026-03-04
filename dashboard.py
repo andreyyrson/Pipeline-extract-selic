@@ -20,8 +20,7 @@ def gerar_dashboard():
     df['valor'] = pd.to_numeric(df['valor'])
 
     # Filtrar últimos 3 anos (36 meses)
-    df = df.sort_values('data').tail(36)
-
+    df = df.sort_values('data').tail(750)
     # Calcular média anual
     df['ano'] = df['data'].dt.year
     media_anual = df.groupby('ano')['valor'].mean().reset_index()
