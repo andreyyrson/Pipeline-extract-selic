@@ -1,15 +1,15 @@
-name: Pipeline Selic: Extração e Dashboard
+name: "Pipeline Selic: Extracao e Dashboard"
 
 on:
   schedule:
-    - cron: '0 12 * * *' # Execução diária automática
-  workflow_dispatch:      # Permite rodar manualmente pelo botão no GitHub
+    - cron: '0 12 * * *'
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: write    # Essencial para salvar os dados e o HTML no repo
+      contents: write
 
     steps:
       - name: Checkout do código
@@ -28,14 +28,13 @@ jobs:
       - name: Executar Extração de Dados
         run: python extract.py
 
-      - name: Gerar Dashboard (Médias 3 anos)
+      - name: Gerar Dashboard
         run: python dashboard.py
 
-      - name: Salvar Dados e Dashboard no Repo
+      - name: Salvar Dados no Repo
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
-          # Adiciona a pasta de dados e a pasta docs (onde fica o index.html)
           git add data/ docs/
-          git commit -m "Pipeline: Extração e Dashboard $(date +'%Y-%m-%d')" || exit 0
+          git commit -m "Pipeline: Atualizacao $(date +'%Y-%m-%d')" || exit 0
           git push
