@@ -3,9 +3,8 @@ import json
 import os
 from datetime import datetime
 
-
 def job_extracao():
-    # URL da API do Banco Central (Série 4390 - Selic)
+    # URL correta pegando desde 2022
     URL = "https://api.bcb.gov.br/dados/serie/bcdata.sgs.11/dados?formato=json&dataInicial=01/01/2022&dataFinal=04/03/2026"
 
     try:
@@ -13,22 +12,20 @@ def job_extracao():
         response.raise_for_status()
         dados = response.json()
 
-        # Criar pasta de dados se não existir
         os.makedirs("data", exist_ok=True)
 
-        # Salvar com a data de hoje para manter histórico
         data_hoje = datetime.now().strftime("%Y-%m-%d")
         caminho = f"data/selic_{data_hoje}.json"
 
+        # CORREÇÃO: Salve 'dados' inteiro para ter o histórico desde 2022
         with open(caminho, "w", encoding="utf-8") as f:
-            json.dump(dados[-12:], f, indent=4)  # Salva apenas os últimos 12 meses
+            json.dump(dados, f, indent=4)
 
-        print(f"Sucesso: Dados salvos em {caminho}")
+        print(f"Sucesso: {len(dados)} registros salvos em {caminho}")
 
     except Exception as e:
         print(f"Erro na extração: {e}")
         exit(1)
-
 
 if __name__ == "__main__":
     job_extracao()
